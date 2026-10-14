@@ -1,0 +1,144 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------------------
+   Design tokens — "How to Film" cinematic dark identity.
+
+   Palette intent:
+   - ink:   charcoal surfaces, near-black base, layered by elevation
+   - bone:  off-white text, never pure #fff (reduces glare on OLED phones)
+   - lime:  the single accent. Used sparingly: primary CTA, active state,
+            completion. If more than ~3 lime elements are on screen, it is
+            being overused.
+   - teal:  secondary informational accent (settings, gear, metadata)
+--------------------------------------------------------------------------- */
+@theme {
+  --color-ink-950: #07080a;
+  --color-ink-900: #0c0d10;
+  --color-ink-850: #111216;
+  --color-ink-800: #16181c;
+  --color-ink-750: #1c1f24;
+  --color-ink-700: #23272d;
+  --color-ink-600: #2e333a;
+  --color-ink-500: #3b4148;
+
+  --color-bone-50: #f5f4ef;
+  --color-bone-200: #d8d7d0;
+  --color-bone-400: #a3a29b;
+  --color-bone-500: #80807a;
+  --color-bone-600: #5f5f5a;
+
+  --color-lime-400: #bff24b;
+  --color-lime-300: #d0f67e;
+  --color-lime-500: #a3d632;
+  --color-lime-950: #1a2309;
+
+  --color-teal-400: #46d7c3;
+  --color-teal-950: #07231f;
+
+  --color-amber-400: #f2c14b;
+  --color-rose-400: #f26b6b;
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-mono-code), ui-monospace, "SF Mono", monospace;
+
+  --radius-card: 1.25rem;
+  --radius-field: 0.875rem;
+
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+
+  --animate-rise: rise 0.45s var(--ease-out-soft) both;
+  --animate-fade: fade 0.3s var(--ease-out-soft) both;
+
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fade {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+}
+
+@layer base {
+  * {
+    border-color: --alpha(var(--color-bone-50) / 8%);
+  }
+
+  html {
+    -webkit-tap-highlight-color: transparent;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-ink-900);
+    color: var(--color-bone-50);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    /* Prevent iOS rubber-band revealing a white gap behind the fixed nav. */
+    overscroll-behavior-y: none;
+  }
+
+  /* Display type is tight and low-contrast-tracking: editorial, not techy. */
+  h1,
+  h2,
+  h3 {
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
+  ::selection {
+    background-color: --alpha(var(--color-lime-400) / 25%);
+  }
+
+  /* Visible, on-brand focus ring for keyboard users only. */
+  :focus-visible {
+    outline: 2px solid var(--color-lime-400);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@utility scrollbar-none {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Subtle film-grain/vignette wash used behind hero areas. Replaces the
+   gradient-heavy look with something closer to a graded image. */
+@utility cine-wash {
+  background-image:
+    radial-gradient(
+      120% 100% at 50% 0%,
+      --alpha(var(--color-lime-400) / 7%) 0%,
+      transparent 55%
+    ),
+    radial-gradient(
+      90% 80% at 100% 0%,
+      --alpha(var(--color-teal-400) / 5%) 0%,
+      transparent 60%
+    );
+}
